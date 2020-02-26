@@ -1,10 +1,3 @@
-/* Template: Aria - Business HTML Landing Page Template
-   Author: Inovatik
-   Created: Jul 2019
-   Description: Custom JS file
-*/
-
-
 (function($) {
     "use strict"; 
 	
@@ -169,66 +162,9 @@
     });
 
 
-    /* Call Me Form */
-    $("#callMeForm").validator().on("submit", function(event) {
-    	if (event.isDefaultPrevented()) {
-            // handle the invalid form...
-            lformError();
-            lsubmitMSG(false, "Please fill all fields!");
-        } else {
-            // everything looks good!
-            event.preventDefault();
-            lsubmitForm();
-        }
-    });
-
-    function lsubmitForm() {
-        // initiate variables with form content
-		var name = $("#lname").val();
-		var phone = $("#lphone").val();
-		var email = $("#lemail").val();
-		var select = $("#lselect").val();
-        var terms = $("#lterms").val();
-        
-        $.ajax({
-            type: "POST",
-            url: "../static/php/callmeform-process.php",
-            data: "name=" + name + "&phone=" + phone + "&email=" + email + "&select=" + select + "&terms=" + terms, 
-            success: function(text) {
-                if (text == "success") {
-                    lformSuccess();
-                } else {
-                    lformError();
-                    lsubmitMSG(false, text);
-                }
-            }
-        });
-	}
-
-    function lformSuccess() {
-        $("#callMeForm")[0].reset();
-        lsubmitMSG(true, "Request Submitted!");
-        $("input").removeClass('notEmpty'); // resets the field label after submission
-    }
-
-    function lformError() {
-        $("#callMeForm").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-            $(this).removeClass();
-        });
-	}
-
-    function lsubmitMSG(valid, msg) {
-        if (valid) {
-            var msgClasses = "h3 text-center tada animated";
-        } else {
-            var msgClasses = "h3 text-center";
-        }
-        $("#lmsgSubmit").removeClass().addClass(msgClasses).text(msg);
-    }
-
 
     /* Contact Form */
-    $("#contactForm").validator().on("submit", function(event) {
+    $("#contactForm").on("submit", function(event) {
     	if (event.isDefaultPrevented()) {
             // handle the invalid form...
             cformError();
@@ -245,11 +181,10 @@
 		var name = $("#cname").val();
 		var email = $("#cemail").val();
         var message = $("#cmessage").val();
-        var terms = $("#cterms").val();
         $.ajax({
             type: "POST",
-            url: "../static/php/contactform-process.php",
-            data: "name=" + name + "&email=" + email + "&message=" + message + "&terms=" + terms, 
+            url: "static/php/contactform-process.php",
+            data: "name=" + name + "&email=" + email + "&message=" + message, 
             success: function(text) {
                 if (text == "success") {
                     cformSuccess();
@@ -302,7 +237,7 @@
 		var name = $("#pname").val();
 		var email = $("#pemail").val();
         var select = $("#pselect").val();
-        var terms = $("#pterms").val();
+        var terms = true;
         
         $.ajax({
             type: "POST",
